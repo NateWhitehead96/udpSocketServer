@@ -27,6 +27,14 @@ def connectionLoop(sock):
             m = json.dumps(message)
             for c in clients:
                sock.sendto(bytes(m,'utf8'), (c[0],c[1]))
+         if 'hearbeat' in data:
+            clients[addr] = {}
+            clients[addr]['lastBeat'] = datetime.now()
+            clients[addr]['color'] = 0
+            message = {"cmd": 0,"player":{"id":str(addr)}}
+            m = json.dumps(message)
+            for c in clients:
+               sock.sendto(bytes(m,'utf8'), (c[0],c[1]))
 
 def cleanClients():
    while True:
